@@ -4,7 +4,19 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="
+        default-src 'self';
+        script-src 'self' 'unsafe-inline' https://*.clerk.accounts.dev;
+        style-src 'self' 'unsafe-inline' https://*.clerk.accounts.dev;
+        script-src-elem 'self' https://*.clerk.accounts.dev;
+        connect-src 'self' https://*.clerk.accounts.dev https://clerk.com;
+        worker-src blob: 'self';
+        img-src 'self' https://*.clerk.accounts.dev data:;
+        frame-src 'self' https://*.clerk.accounts.dev;
+      "
+    />
     <title>Electron + Vite + React</title>
   </head>
   <body>

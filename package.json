@@ -20,6 +20,7 @@
     "e2e": "playwright test"
   },
   "dependencies": {
+    "@clerk/clerk-react": "^5.9.1",
     "electron-updater": "^6.1.8"
   },
   "devDependencies": {
