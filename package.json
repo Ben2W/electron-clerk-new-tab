@@ -21,12 +21,14 @@
   },
   "dependencies": {
     "@clerk/clerk-react": "^5.9.1",
-    "electron-updater": "^6.1.8"
+    "electron-updater": "^6.1.8",
+    "set-cookie-parser": "^2.7.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.42.1",
     "@types/react": "^18.2.64",
     "@types/react-dom": "^18.2.21",
+    "@types/set-cookie-parser": "^2.4.10",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.18",
     "electron": "^29.1.1",
