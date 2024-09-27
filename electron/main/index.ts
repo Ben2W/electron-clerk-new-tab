@@ -14,6 +14,7 @@ import os from "node:os";
 import url from "node:url";
 import { update } from "./update";
 import setCookie from "set-cookie-parser";
+import { Cookie } from "electron";
 
 const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -69,18 +70,38 @@ async function createWindow() {
   });
 
   const filter = {
-    urls: ["https://*/*", "http://*/*"],
+    urls: ["https://*.croak.app/*", "http://*.croak.app/*"],
   };
 
+  // Intercept requests to clerk.croak.app
   session.defaultSession.webRequest.onBeforeSendHeaders(
     filter,
-    (details, callback) => {
-      details.requestHeaders["Origin"] = "https://www.croak.app";
-      details.requestHeaders["Referer"] = "https://www.croak.app";
+    async (details, callback) => {
+      if (details.url.includes("clerk.croak.app")) {
+        try {
+          // Get all cookies for clerk.croak.app
+          const cookies = await session.defaultSession.cookies.get({
+            domain: "clerk.croak.app",
+          });
+
+          // Add cookies to the request headers
+          const cookieHeader = cookies
+            .map((cookie) => `${cookie.name}=${cookie.value}`)
+            .join("; ");
+          details.requestHeaders["Cookie"] = cookieHeader;
+
+          // Set other headers as needed
+          details.requestHeaders["Origin"] = "https://www.croak.app";
+          details.requestHeaders["Referer"] = "https://www.croak.app";
+        } catch (error) {
+          console.error("Error retrieving cookies:", error);
+        }
+      }
 
       callback({ cancel: false, requestHeaders: details.requestHeaders });
     }
   );
+
   session.defaultSession.webRequest.onHeadersReceived(
     filter,
     (details, callback) => {
